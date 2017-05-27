@@ -2,37 +2,33 @@ package com.jongzazaal.samplekotlin
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.ImageButton
-import android.widget.TextView
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
-    private var textView: TextView? = null
-    private var addButton: ImageButton? = null
-    private var removeButton: ImageButton? = null
-    private var num: Int = 1
+    private var mRecyclerView: RecyclerView? = null
+    private var mAdapter: RecyclerView.Adapter<*>? = null
+    private var mLayoutManager: RecyclerView.LayoutManager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.recycler_main)
+        mRecyclerView = findViewById(R.id.my_recycler_view) as RecyclerView
 
-        textView = findViewById(R.id.text) as TextView
-        addButton = findViewById(R.id.add) as ImageButton
-        removeButton = findViewById(R.id.remove) as ImageButton
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
 
-        addButton!!.setOnClickListener {
-            num = numCount(num, 0)
-            textView!!.text = "number: $num"
-        }
-        removeButton!!.setOnClickListener {
-            num = numCount(num, 1)
-            textView!!.text = "number: $num"
-        }
+        mRecyclerView!!.setHasFixedSize(true)
+
+        // use a linear layout manager
+        mLayoutManager = LinearLayoutManager(getApplicationContext())
+        mRecyclerView!!.setLayoutManager(mLayoutManager)
+
+        // specify an adapter (see also next example)
+        val myDataSet = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+
+        mAdapter = MyAdapter(myDataSet)
+        mRecyclerView!!.setAdapter(mAdapter)
+
     }
-    private fun numCount(inputNum: Int, check: Int): Int {
-        if (check == 0){
-            return inputNum + 1
-        }
-        else{
-            return inputNum - 1
-        }
-    }
+
 }
